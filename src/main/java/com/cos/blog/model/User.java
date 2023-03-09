@@ -4,6 +4,8 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -25,7 +27,7 @@ public class User {
 		
 	 @Id   //primary key  
 	 @GeneratedValue(strategy = GenerationType.IDENTITY)  // database 넘버링 전략
-	  private int  id; // 시퀀스 /auto-increment
+	 private int  id; // 시퀀스 /auto-increment
 
 	 @Column(nullable = false, length = 30)
 	 private String username;
@@ -35,9 +37,9 @@ public class User {
 
 	 @Column(nullable = false, length = 50)
 	 private String email;
-
-	 @ColumnDefault("'user'")
-	 private String role;  // enum  데이터의 도메인(범위) 
+	 
+	 @Enumerated(EnumType.STRING)
+	 private RoleType role;
 
 	 @CreationTimestamp // 가입한 시간
 	 private Timestamp createDate;
