@@ -12,6 +12,7 @@ import javax.persistence.Id;
 
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.DynamicInsert;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -23,6 +24,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
+//@DynamicInsert   //insert 시에 null 인 필드를 제외 시킨다. 
 public class User {
 		
 	 @Id   //primary key  
@@ -38,6 +40,8 @@ public class User {
 	 @Column(nullable = false, length = 50)
 	 private String email;
 	 
+	 
+	 //@ColumnDefault("user")
 	 @Enumerated(EnumType.STRING)
 	 private RoleType role;
 
