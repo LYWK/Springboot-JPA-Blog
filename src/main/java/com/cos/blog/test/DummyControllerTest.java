@@ -6,10 +6,12 @@ import java.util.function.Supplier;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -28,6 +30,20 @@ public class DummyControllerTest {
 	@Autowired // 의존성 주입(DI)
 	private UserRepository userRepository;
 	
+	@DeleteMapping("/dummy/user/{id}")
+	public String  delete(@PathVariable int id) {
+		
+		try {
+			userRepository.deleteById(id);
+		} catch (EmptyResultDataAccessException e) {
+			// TODO: handle exception
+			return "삭제실패";
+		}		
+		
+		return "삭제완료:" + id;
+	} 
+	
+	
 	//save 함수는 id를 전달하지 않으면 insert를 해주고, id를 전달할 시, id에 대한 데이터가 존재할시 update, 존재안할시에 insert 해줌. 
 	@Transactional // 더티체킹 - 해당 어노테이션으로 save 메서드호출 하지 않아도 db에 데이터가 적용됨.
 	@PutMapping("/dummy/user/{id}")
@@ -44,7 +60,7 @@ public class DummyControllerTest {
 		
 		//방법1
 		//userRepository.save(user);
-		return null;
+		return user;
 	}
 	
 	// http://localhost:8080/blog/dummy/user
