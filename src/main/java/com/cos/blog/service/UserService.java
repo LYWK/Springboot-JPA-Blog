@@ -23,12 +23,14 @@ public class UserService {
 			userRepository.save(user);
 	}
 	
-	@Transactional(readOnly = true) /// select 할때 트랜잭션 시작, 해당 서비스 종료시에 트랜잭션 종료 (정합성유지)
-	public User 로그인(User user){
-		
-	User principal = userRepository.findbyUsernameAndPassword(user.getUsername(), user.getPassword());
-			
-			return principal;
-	}
+	/*
+	 * @Transactional(readOnly = true) /// select 할때 트랜잭션 시작, 해당 서비스 종료시에 트랜잭션 종료
+	 * (정합성유지) public User 로그인(User user){
+	 * 
+	 * User principal = userRepository.findByUsernameAndPassword(user.getUsername(),
+	 * user.getPassword());
+	 * 
+	 * return principal; }
+	 */
 	
 }

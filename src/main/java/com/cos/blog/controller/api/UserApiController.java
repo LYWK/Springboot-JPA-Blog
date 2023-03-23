@@ -22,7 +22,7 @@ public class UserApiController {
 //	@Autowired
 //	private HttpSession session;
 	
-	@PostMapping("/api/user")
+	@PostMapping("/auth/joinProc")
 	public ResponseDto<Integer> save(@RequestBody User user) {
 		System.out.println("UserApiController : save 호출됨.");
 		//실제로 DB에 insert를 하고 아래에서 return
@@ -33,15 +33,15 @@ public class UserApiController {
 	}
 	
 	//기본적인 login 방식 - 브라우져에서 넘어온 user정보를 세션에 담아서 응답 데이터로 넘겨줌... 
-	@PostMapping("/api/user/login")
-	public ResponseDto<Integer> login(@RequestBody User user,HttpSession session){
-		System.out.println("UserApiController : login 호출됨.");
-		
-		User principal =  userService.로그인(user);
-		
-		if (principal != null) {
-			session.setAttribute("principal", principal);
-		}
-		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
-	}
+	/*
+	 * @PostMapping("/api/user/login") public ResponseDto<Integer>
+	 * login(@RequestBody User user,HttpSession session){
+	 * System.out.println("UserApiController : login 호출됨.");
+	 * 
+	 * User principal = userService.로그인(user); System.out.println("principal:" +
+	 * principal); if (principal != null) { session.setAttribute("principal",
+	 * principal); return new ResponseDto<Integer>(HttpStatus.OK.value(), 1); }else
+	 * { return new ResponseDto<Integer>(HttpStatus.NOT_FOUND.value(), 1); } }
+	 */
+	
 }
