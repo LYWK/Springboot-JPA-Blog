@@ -25,8 +25,8 @@
 			<span class="navbar-toggler-icon"></span>
 		</button>
 		<div class="collapse navbar-collapse" id="collapsibleNavbar">
-		
-		<c:choose>  <!--principal이란? 로그인하면 스프링이 세션을 만들어서 principal에 저장함-->
+		<!--principal이란? 로그인하면 스프링이 세션을 만들어서 principal에 저장함-->
+		<c:choose>  
 			<c:when test="${empty principal}">
 				<ul class="navbar-nav">
 					<li class="nav-item"><a class="nav-link" href="/auth/loginForm">로그인</a></li>
