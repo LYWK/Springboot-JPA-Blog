@@ -2,32 +2,32 @@ package com.cos.blog.service;
 
 
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.cos.blog.model.Board;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
+import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.UserRepository;
 
 
 @Service   // 1. 트랜잭션 관리,    2. 서비스의 의미 
-public class UserService {
+public class BoardService {
 
 	@Autowired
-	private UserRepository userRepository;
+	private BoardRepository boardRepository;
 	
-	@Autowired
-	private BCryptPasswordEncoder encode;
 	
 	@Transactional
-	public void 회원가입(User user){
-			String rawPassword = user.getPassword();
-			String encPassword = encode.encode(rawPassword);
-			user.setRole(RoleType.USER);
-			user.setPassword(encPassword);
-			userRepository.save(user);
+	public void 글쓰기(Board board,User user){
+			board.setCount(0);
+			board.setUser(user);
+			boardRepository.save(board);
 	}
 	
 	/*
@@ -40,4 +40,7 @@ public class UserService {
 	 * return principal; }
 	 */
 	
+	public List<Board>  글목록(){
+		return boardRepository.findAll();
+	}
 }
