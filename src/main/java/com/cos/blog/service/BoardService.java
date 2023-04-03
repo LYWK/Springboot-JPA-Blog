@@ -5,6 +5,8 @@ package com.cos.blog.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +16,7 @@ import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
 import com.cos.blog.repository.BoardRepository;
 import com.cos.blog.repository.UserRepository;
+import com.sun.xml.txw2.IllegalAnnotationException;
 
 
 @Service   // 1. 트랜잭션 관리,    2. 서비스의 의미 
@@ -40,7 +43,35 @@ public class BoardService {
 	 * return principal; }
 	 */
 	
-	public List<Board>  글목록(){
-		return boardRepository.findAll();
+	@Transactional(readOnly = true)
+	public Page<Board>  글목록(Pageable pageable){
+		return boardRepository.findAll(pageable);
 	}
+	
+	@Transactional(readOnly = true)
+	public Board 글상세보기(int id) {
+		return boardRepository.findById(id)
+				.orElseThrow(()->{return new IllegalArgumentException("상세보기실패:아이디를 찾을수 없ㄷ.");
+						});
+	}
+	
+	@Transactional
+	public void 글삭제(int id) {
+		boardRepository.deleteById(id);
+	}
+	
+	@Transactional
+	public void 글수정(int id, Board requestBoard) {
+		Board board = boardRepository.findById(id)
+				.orElseThrow(()->{
+					return new IllegalArgumentException("상세보기실패:아이디를 찾을수 없ㄷ.");
+				});
+	
+		board.setTitle(requestBoard.getTitle());
+		board.setContent(requestBoard.getContent());
+		// 해당 함수 종료 시(service가 종료될때) 트랜잭션이 종료됨 이때 
+		//  board가 수정됐기때문에 더티체킹 일어남 - 자동 업데이트가 일어남,DB쪽으로 플러싱
+	}
+	
+	
 }
