@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -25,7 +26,7 @@ public class UserApiController {
 //	@Autowired
 //	private HttpSession session;
 	
-	@PostMapping("/auth/joinProc")
+	@PostMapping("/auth/joinProc")//@RequestBody- json 형식의 데이터를 받을때ㅣ..
 	public ResponseDto<Integer> save(@RequestBody User user) {
 		System.out.println("UserApiController : save 호출됨.");
 		//실제로 DB에 insert를 하고 아래에서 return
@@ -35,6 +36,13 @@ public class UserApiController {
 		
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);// java object 를 json으로 변환해서 리턴 (jackson)
 	}
+	
+	@PutMapping("/user")
+	public ResponseDto<Integer> update(@RequestBody User user){
+		userService.회원수정(user);
+		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
+	}
+	
 	
 	//기본적인 login 방식 - 브라우져에서 넘어온 user정보를 세션에 담아서 응답 데이터로 넘겨줌... 
 	/*
