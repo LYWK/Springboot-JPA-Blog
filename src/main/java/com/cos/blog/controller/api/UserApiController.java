@@ -4,12 +4,19 @@ import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cos.blog.config.auth.PrincipalDetail;
 import com.cos.blog.dto.ResponseDto;
 import com.cos.blog.model.RoleType;
 import com.cos.blog.model.User;
@@ -21,7 +28,8 @@ public class UserApiController {
 	@Autowired
 	private UserService userService;
 	
-	
+	@Autowired
+	private AuthenticationManager authenticationManager;
 	
 //	@Autowired
 //	private HttpSession session;
@@ -40,6 +48,14 @@ public class UserApiController {
 	@PutMapping("/user")
 	public ResponseDto<Integer> update(@RequestBody User user){
 		userService.회원수정(user);
+		//여기서 트랜잭션이 종료됨.db에 변경된값 적용
+		//세션에 변경된 값이 적용되지는 않은 상태
+		//세션값 변경 - spring security session 의 개념 숙지
+		//Authentication 객체를 만들어서 세션에 넣기 위한 일련의 과정 필요(x)
+		Authentication authentication = 
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(user.getUsername(), user.getPassword()));
+	
+		SecurityContextHolder.getContext().setAuthentication(authentication);
 		return new ResponseDto<Integer>(HttpStatus.OK.value(), 1);
 	}
 	
