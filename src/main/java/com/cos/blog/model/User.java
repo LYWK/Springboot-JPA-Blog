@@ -46,6 +46,10 @@ public class User {
 	 @Enumerated(EnumType.STRING)
 	 private RoleType role;
 
+	 
+	 private String oauth;  //kakao, google 로그인한 경우
+	 
+	 
 	 @CreationTimestamp // 가입한 시간
 	 private Timestamp createDate;
 
