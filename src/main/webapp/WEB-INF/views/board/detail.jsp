@@ -20,6 +20,26 @@
 		  <div>${board.content}</div>
 		</div>			
 		<hr />
+		
+		<div class="card">
+				<div class="card-body"><textarea class="form-control"  rows="1" cols=""></textarea></div>
+				<div class="card-footer"><button class="btn btn-primary">등록</button></div>
+		</div>
+		
+		<br/>
+		
+		<div class="card">
+			<div class="card-header">댓글 리스트</div>
+			<ul class="list-group">
+				<li class="list-group-item d-flex">
+					<div>댓글내용입니다. </div>
+					<div>
+					 	<div>작성자: ssarmango &nbsp;</div>
+					 	<button>삭제</button>
+					</div>
+				</li>
+			</ul>
+		</div>
 </div>
 
  <script src="/js/board.js"></script>
